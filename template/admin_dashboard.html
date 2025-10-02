@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+  <h2>Admin Dashboard</h2>
+  <p>Total tickets sold: <strong>{{ total }}</strong></p>
+  <p>Unpaid registrations: <strong>{{ unpaid }}</strong></p>
+  <p><a class="btn alt" href="{{ url_for('draw') }}">Draw Winner</a></p>
+  <h3>Recent registrations</h3>
+  <table class="table">
+    <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Account</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+    {% for t in tickets %}
+      <tr>
+        <td>{{ t['id'] }}</td>
+        <td>{{ t['name'] }}</td>
+        <td>{{ t['email'] or '—' }}</td>
+        <td>{{ t['phone'] or '—' }}</td>
+        <td>{{ t['bank_account'] or '—' }}</td>
+        <td>{{ 'Paid' if t['paid'] else 'Pending' }}</td>
+        <td>
+          {% if not t['paid'] %}
+            <form method="post" action="{{ url_for('admin_confirm') }}" style="display:inline">
+              <input type="hidden" name="ticket_id" value="{{ t['id'] }}">
+              <button class="btn" type="submit">Confirm & Issue Ticket</button>
+            </form>
+          {% else %}
+            <a class="btn alt" href="{{ url_for('ticket', id=t['id']) }}">View</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="admin-actions">
+    <form method="post" action="{{ url_for('admin_clear_tickets') }}" onsubmit="return confirm('This will permanently delete all tickets. Are you sure?');">
+      <button type="submit" class="btn alt">Clear All Tickets</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

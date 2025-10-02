@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-center">
+  <div class="form-card card">
+    <h2>Account Login</h2>
+    <form method="post" action="{{ url_for('login') }}">
+      <label class="field">Email<input name="email" type="email" required></label>
+      <label class="field">Password<input name="password" type="password" required></label>
+      <div class="actions"><button class="btn" type="submit">Login</button></div>
+    </form>
+    <p class="muted">No account yet? <a href="{{ url_for('register_user') }}">Create one</a></p>
+  </div>
+</div>
+{% endblock %}

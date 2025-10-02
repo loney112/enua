@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+  <h2>Payment Instructions</h2>
+  <p class="muted">Registration ID: <strong>{{ reg_id }}</strong></p>
+  <p class="muted">Amount: <strong>₦{{ amount }}</strong></p>
+  <p>Please make a bank transfer to the account below and enter the account used for the transfer. Your request will remain pending until an admin verifies and confirms your payment.</p>
+
+  <div class="bank-details">
+    <p><strong>Bank:</strong> {{ bank_name }}</p>
+    <p><strong>Account Name:</strong> {{ bank_account_name }}</p>
+    <p><strong>Account Number:</strong> <code>{{ bank_account }}</code></p>
+  </div>
+
+  <form method="post" action="{{ url_for('payment_confirm') }}">
+    <input type="hidden" name="reg_id" value="{{ reg_id }}">
+    <div class="field">
+      <label for="payer_account">Account number used for transfer</label>
+      <input id="payer_account" name="payer_account" required>
+    </div>
+    <div class="field">
+      <label for="payer_name">Name on account (optional)</label>
+      <input id="payer_name" name="payer_name">
+    </div>
+    <div class="actions"><button class="btn" type="submit">Submit payment info</button></div>
+  </form>
+</div>
+
+{% endblock %}

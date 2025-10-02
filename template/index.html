@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div>
+      <p class="muted">Total tickets sold</p>
+      <h2>{{ total }}</h2>
+    </div>
+    {% if show_clock %}
+      <div style="text-align:right">
+        <p class="muted">Server-synced clock (UTC)</p>
+        <div id="clock" class="clock">--:--:--</div>
+      </div>
+      <script>
+        const serverIso = '{{ server_time }}';
+        let serverDate = new Date(serverIso);
+        let clientDate = new Date();
+        let offsetMs = serverDate.getTime() - clientDate.getTime();
+        function updateClock(){
+          let now = new Date(Date.now() + offsetMs);
+          let h = String(now.getUTCHours()).padStart(2,'0');
+          let m = String(now.getUTCMinutes()).padStart(2,'0');
+          let s = String(now.getUTCSeconds()).padStart(2,'0');
+          document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+      </script>
+    {% endif %}
+  </div>
+
+  <hr>
+
+  {% if winner %}
+    <h3>Latest Winner</h3>
+    <p>Ticket #{{ winner['id'] }} — {{ winner['name'] }} ({{ winner['email'] or 'no email' }})</p>
+    <p>Drawn at: {{ winner['drawn_at'] }}</p>
+  {% else %}
+    <p>No winner drawn yet.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

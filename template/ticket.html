@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="max-width:480px;margin:1.5rem auto;text-align:center">
+  <div style="font-weight:900;color:var(--primary);font-size:1.2rem;letter-spacing:1px;margin-bottom:6px">ENUGU AMAKA ESTATE RAFFLE</div>
+  <div style="font-weight:800;margin-bottom:6px">TICKET PRICE: ₦200,000</div>
+  <div style="margin-bottom:10px">WINNER WINS A LAND WORTH ₦80,000,000</div>
+
+  <div class="field" style="text-align:left">
+	<div class="label-key">ENTRY NO</div>
+	<div class="value">{{ ticket['id'] }}</div>
+  </div>
+  <div class="field" style="text-align:left">
+	<div class="label-key">NAME</div>
+	<div class="value">{{ ticket['name'] }}</div>
+  </div>
+  <div class="field" style="text-align:left">
+	<div class="label-key">EMAIL</div>
+	<div class="value">{{ ticket['email'] or '—' }}</div>
+  </div>
+  <div class="field" style="text-align:left">
+	<div class="label-key">PHONE</div>
+	<div class="value">{{ ticket['phone'] or ticket['payer_name'] or '—' }}</div>
+  </div>
+
+  <div class="actions" style="justify-content:center">
+	{% if ticket['ticket_image'] %}
+	  <a class="btn" href="/{{ ticket['ticket_image'] }}" download>Download Ticket Image</a>
+	{% endif %}
+	<button class="btn alt" onclick="window.print();return false;">Print Ticket</button>
+  </div>
+</div>
+
+{% endblock %}

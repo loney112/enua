@@ -1,0 +1,246 @@
+/* Enugu Amaka Building Materials Nig Ltd - Modern Professional Theme */
+:root {
+  --primary: #1e3a8a;
+  --btn-gradient-1: #007bff;
+  --btn-gradient-2: #00c6ff;
+  --secondary: #c44536;
+  --sand: #d6b161;
+  --gold: #d4af37;
+  --white: #fff;
+  --charcoal: #222;
+  --accent: #d4af37;
+}
+body {
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  background: #0b1220; /* subtle dark page background */
+  color: #e6eef9;
+  margin: 0;
+  padding: 0;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2vw 0.5rem 2vw;
+  background: var(--white);
+  border-bottom: 2px solid var(--primary);
+}
+.logo {
+  height: 60px;
+  width: auto;
+  margin-right: 1.2rem;
+}
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+nav a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+nav a:hover {
+  color: var(--gold);
+}
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #051029 0%, #062a4a 60%);
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center the overlay horizontally */
+  padding: 3rem 2vw;
+  color: var(--white);
+}
+.hero-overlay {
+  /* Use a light card background so black text is clear and bold */
+  background: rgba(255,255,255,0.96);
+  padding: 2.8rem 2.4rem;
+  border-radius: 18px;
+  max-width: 760px;
+  text-align: center; /* center heading/buttons */
+  backdrop-filter: blur(6px);
+  color: #071028; /* dark text for readability */
+}
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: 1.8px;
+  color: #071028; /* black/very dark heading */
+}
+.hero h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 1.2rem 0;
+  color: #123; /* dark subtitle */
+}
+.hero .cta-row {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+}
+.btn, button {
+  font-weight: 900;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 1.6rem;
+  font-size: 1.05rem;
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(2,42,82,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: linear-gradient(90deg, var(--btn-gradient-1), var(--btn-gradient-2));
+  background-size: 200% 200%;
+  animation: btnGradient 4s ease infinite;
+}
+.btn.alt {
+  /* slightly different blue tone for alt buttons */
+  background: linear-gradient(90deg, #0056b3, #00b4ff);
+  background-size: 200% 200%;
+  animation: btnGradient 4s ease infinite;
+}
+.btn:hover, button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 18px 40px rgba(2,42,82,0.45);
+}
+
+@keyframes btnGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.sticky-contact {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: var(--primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 0.7rem 0;
+  font-size: 1.15rem;
+  z-index: 1000;
+  box-shadow: 0 -2px 12px rgba(30,58,138,0.10);
+}
+.sticky-contact .phone {
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sticky-contact .wa {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #25D366;
+  font-weight: 700;
+  text-decoration: none;
+}
+.sticky-contact .wa svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+@media (max-width: 800px) {
+  .hero, header { flex-direction: column; align-items: flex-start; }
+  .hero-overlay { padding: 1.2rem 1rem; }
+  nav { gap: 0.7rem; }
+}
+@media (max-width: 600px) {
+  .hero { min-height: 220px; padding: 1.2rem 2vw; }
+  .hero-overlay { max-width: 100%; }
+  header { padding: 0.7rem 2vw 0.3rem 2vw; }
+}
+
+/* Make form inputs more prominent and bold */
+input, select, textarea {
+  font-weight: 800;
+  padding: 10px 12px;
+  border: 2px solid rgba(2,42,82,0.10);
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #071028;
+}
+label { font-weight: 800; color: #071028 }
+
+/* Make the main content area use dark text for high contrast */
+.content-container, .page-wrap { color: #071028 }
+
+/* Page containers and cards */
+.page-wrap { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+.card, .form-card { background: rgba(255,255,255,0.98); border-radius: 12px; padding: 1.6rem; box-shadow: 0 10px 30px rgba(2,42,82,0.08); border: 1px solid rgba(2,42,82,0.06); color: #071028; }
+/* center any single-column form sections vertically and horizontally */
+.form-center { display:flex; justify-content:center; align-items:center; padding:2rem 0; min-height:56vh }
+.form-card { max-width:680px; width:100%; }
+
+/* subtle glass-like highlight around page content */
+.page-wrap::before{ content: ''; position: fixed; left:0; top:0; right:0; bottom:0; pointer-events:none; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.00)); }
+
+/* Form layout helpers */
+.field-row { display:flex; gap:12px }
+.field { display:flex; flex-direction:column; gap:6px; flex:1 }
+.actions { display:flex; justify-content:flex-end; margin-top:8px }
+.muted { color: rgba(0,0,0,0.55); }
+
+/* Tables */
+.table { width:100%; border-collapse:collapse; }
+.table th, .table td { padding:10px 8px; border-bottom:1px solid rgba(0,0,0,0.06); text-align:left }
+.table thead th { font-weight:800; background: rgba(30,58,138,0.03) }
+
+/* Responsive helpers */
+@media (max-width:800px){
+  .field-row{flex-direction:column}
+  nav{order:3;margin-top:12px}
+  .brand{flex-direction:column;align-items:flex-start}
+}
+
+/* Buttons small */
+.small { padding:6px 10px; font-size:0.95rem }
+
+/* Ticket visual helper */
+.ticket-visual{width:100%;max-width:900px;height:auto;background-size:cover;background-position:center;border-radius:8px;position:relative;padding:24px 20px;box-sizing:border-box}
+.ticket-overlay{position:relative;min-height:260px}
+
+
+/* Header inline admin login form */
+.header-login { display:flex; gap:8px; align-items:center }
+.header-login input { width:140px; padding:8px 10px; font-weight:800; border:2px solid rgba(30,58,138,0.15); border-radius:8px }
+.header-login input[type=password] { width:160px }
+.header-login .small-btn { padding:6px 10px; font-size:0.9rem; border-radius:8px }
+@media (max-width:800px){ .header-login{display:none} }
+/* Brand heading styles — bold, high-contrast, visible colors */
+.brand-title {
+  color: #1e3a8a;         /* deep blue (primary) */
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.brand-sub {
+  color: #d6b161;         /* sandstone (secondary) */
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+  opacity: 0.95;
+}
+
+.brand-tag {
+  color: #d4af37;         /* gold accent */
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-style: normal;
+  letter-spacing: 0.6px;
+}
+
+/* Ensure brand area stands out on dark or light headers */
+.site-header .brand-text { 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

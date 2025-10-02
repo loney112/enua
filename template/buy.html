@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-center">
+  <div class="form-card card">
+    <h2>Buy Ticket</h2>
+    <form method="post">
+      <div class="field-row">
+        <label class="field">Name<input name="name" required></label>
+        <label class="field">Phone<input name="phone" type="tel" required placeholder="0803xxxxxxx" pattern="[0-9+ -]{7,}"></label>
+      </div>
+      <div class="field">
+        <label>Email<input name="email" type="email" required placeholder="you@example.com"></label>
+      </div>
+      <div class="actions"><button class="btn" type="submit">Buy Ticket</button></div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

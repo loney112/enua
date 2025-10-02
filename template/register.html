@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="register-ticket-wrap">
+  <div class="ticket-visual card" style="background-image: url('/static/ticket_layout.png')" role="img" aria-label="Ticket layout">
+    <div class="ticket-overlay">
+      <form method="post" action="{{ url_for('register') }}" class="ticket-form">
+        <h2 class="sr-only">Register for Raffle</h2>
+        <div class="field-row">
+          <label class="field">Name<input name="name" required placeholder="Your full name"></label>
+          <label class="field">Phone<input name="phone" type="tel" required placeholder="0803xxxxxxx" pattern="[0-9+ -]{7,}"></label>
+        </div>
+        <div class="field">
+          <label>Email<input name="email" type="email" required placeholder="you@example.com"></label>
+        </div>
+        <div class="field">
+          <label>Amount (NGN)<input name="amount" type="number" value="200000" min="200000" required></label>
+        </div>
+        <div class="actions"><button class="btn" type="submit">Proceed to Payment</button></div>
+      </form>
+    </div>
+  </div>
+  <p class="muted" style="text-align:center;margin-top:10px">Payments are offline bank-transfer. After submitting you'll be shown bank details to complete payment.</p>
+</div>
+
+{% endblock %}
