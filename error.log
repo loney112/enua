@@ -1,0 +1,224 @@
+2025-10-03 02:22:55,677 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.208.216.155:5000
+2025-10-03 02:22:56,008 INFO [33mPress CTRL+C to quit[0m
+2025-10-03 02:25:26,037 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.208.216.155:5000
+2025-10-03 02:25:26,037 INFO [33mPress CTRL+C to quit[0m
+2025-10-03 02:25:26,069 INFO  * Restarting with stat
+2025-10-03 02:25:26,952 WARNING  * Debugger is active!
+2025-10-03 02:25:27,030 INFO  * Debugger PIN: 107-395-383
+2025-10-04 03:02:16,006 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.156:5000
+2025-10-04 03:02:16,638 INFO [33mPress CTRL+C to quit[0m
+2025-10-04 03:03:38,686 INFO 127.0.0.1 - - [04/Oct/2025 03:03:38] "GET / HTTP/1.1" 200 -
+2025-10-04 03:03:38,860 INFO 127.0.0.1 - - [04/Oct/2025 03:03:38] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:03:39,901 INFO 127.0.0.1 - - [04/Oct/2025 03:03:39] "GET /static/style.css HTTP/1.1" 200 -
+2025-10-04 03:03:40,410 INFO 127.0.0.1 - - [04/Oct/2025 03:03:40] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-10-04 03:03:53,185 INFO 127.0.0.1 - - [04/Oct/2025 03:03:53] "GET /login HTTP/1.1" 200 -
+2025-10-04 03:03:54,252 INFO 127.0.0.1 - - [04/Oct/2025 03:03:54] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:03:54,255 INFO 127.0.0.1 - - [04/Oct/2025 03:03:54] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:04:05,234 INFO 127.0.0.1 - - [04/Oct/2025 03:04:05] "GET /login HTTP/1.1" 200 -
+2025-10-04 03:04:05,707 INFO 127.0.0.1 - - [04/Oct/2025 03:04:05] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:04:05,708 INFO 127.0.0.1 - - [04/Oct/2025 03:04:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:04:36,517 INFO 127.0.0.1 - - [04/Oct/2025 03:04:36] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:04:36,895 INFO 127.0.0.1 - - [04/Oct/2025 03:04:36] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:04:36,898 INFO 127.0.0.1 - - [04/Oct/2025 03:04:36] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:05:00,456 INFO 127.0.0.1 - - [04/Oct/2025 03:05:00] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:05:00,497 INFO 127.0.0.1 - - [04/Oct/2025 03:05:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:05:00,501 INFO 127.0.0.1 - - [04/Oct/2025 03:05:00] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:05:10,151 INFO 127.0.0.1 - - [04/Oct/2025 03:05:10] "GET /register_user HTTP/1.1" 200 -
+2025-10-04 03:05:10,214 INFO 127.0.0.1 - - [04/Oct/2025 03:05:10] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:05:10,216 INFO 127.0.0.1 - - [04/Oct/2025 03:05:10] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:06:02,305 INFO 127.0.0.1 - - [04/Oct/2025 03:06:02] "[32mPOST /register_user HTTP/1.1[0m" 302 -
+2025-10-04 03:06:02,412 INFO 127.0.0.1 - - [04/Oct/2025 03:06:02] "GET /login HTTP/1.1" 200 -
+2025-10-04 03:06:02,700 INFO 127.0.0.1 - - [04/Oct/2025 03:06:02] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:06:02,700 INFO 127.0.0.1 - - [04/Oct/2025 03:06:02] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:06:15,342 INFO 127.0.0.1 - - [04/Oct/2025 03:06:15] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:06:15,398 INFO 127.0.0.1 - - [04/Oct/2025 03:06:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:06:15,407 INFO 127.0.0.1 - - [04/Oct/2025 03:06:15] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:06:32,753 INFO 127.0.0.1 - - [04/Oct/2025 03:06:32] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:06:32,774 INFO 127.0.0.1 - - [04/Oct/2025 03:06:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:06:32,785 INFO 127.0.0.1 - - [04/Oct/2025 03:06:32] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:12:13,219 INFO 127.0.0.1 - - [04/Oct/2025 03:12:13] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:12:13,342 INFO 127.0.0.1 - - [04/Oct/2025 03:12:13] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:12:13,352 INFO 127.0.0.1 - - [04/Oct/2025 03:12:13] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:12:28,180 INFO 127.0.0.1 - - [04/Oct/2025 03:12:28] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:12:28,213 INFO 127.0.0.1 - - [04/Oct/2025 03:12:28] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:12:28,216 INFO 127.0.0.1 - - [04/Oct/2025 03:12:28] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:12:46,046 INFO 127.0.0.1 - - [04/Oct/2025 03:12:46] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:12:46,075 INFO 127.0.0.1 - - [04/Oct/2025 03:12:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:12:46,079 INFO 127.0.0.1 - - [04/Oct/2025 03:12:46] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:16:03,806 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.156:5000
+2025-10-04 03:16:03,891 INFO [33mPress CTRL+C to quit[0m
+2025-10-04 03:18:20,609 INFO 127.0.0.1 - - [04/Oct/2025 03:18:20] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:18:23,513 INFO 127.0.0.1 - - [04/Oct/2025 03:18:23] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:18:24,411 INFO 127.0.0.1 - - [04/Oct/2025 03:18:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:18:47,505 INFO 127.0.0.1 - - [04/Oct/2025 03:18:47] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:18:47,576 INFO 127.0.0.1 - - [04/Oct/2025 03:18:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:18:47,590 INFO 127.0.0.1 - - [04/Oct/2025 03:18:47] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:20:38,803 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.156:5000
+2025-10-04 03:20:38,804 INFO [33mPress CTRL+C to quit[0m
+2025-10-04 03:20:48,357 INFO 127.0.0.1 - - [04/Oct/2025 03:20:48] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-10-04 03:20:49,237 INFO 127.0.0.1 - - [04/Oct/2025 03:20:49] "GET / HTTP/1.1" 200 -
+2025-10-04 03:20:50,196 INFO 127.0.0.1 - - [04/Oct/2025 03:20:50] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:20:50,294 INFO 127.0.0.1 - - [04/Oct/2025 03:20:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:21:04,617 INFO 127.0.0.1 - - [04/Oct/2025 03:21:04] "GET /buy HTTP/1.1" 200 -
+2025-10-04 03:21:05,598 INFO 127.0.0.1 - - [04/Oct/2025 03:21:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:21:05,691 INFO 127.0.0.1 - - [04/Oct/2025 03:21:05] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:21:21,343 INFO 127.0.0.1 - - [04/Oct/2025 03:21:21] "POST /buy HTTP/1.1" 200 -
+2025-10-04 03:21:21,537 INFO 127.0.0.1 - - [04/Oct/2025 03:21:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:21:22,096 INFO 127.0.0.1 - - [04/Oct/2025 03:21:22] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:21:40,835 INFO 127.0.0.1 - - [04/Oct/2025 03:21:40] "[32mPOST /payment/confirm HTTP/1.1[0m" 302 -
+2025-10-04 03:21:40,949 INFO 127.0.0.1 - - [04/Oct/2025 03:21:40] "GET / HTTP/1.1" 200 -
+2025-10-04 03:21:41,227 INFO 127.0.0.1 - - [04/Oct/2025 03:21:41] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:21:41,228 INFO 127.0.0.1 - - [04/Oct/2025 03:21:41] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:21:47,172 INFO 127.0.0.1 - - [04/Oct/2025 03:21:47] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-10-04 03:21:47,224 INFO 127.0.0.1 - - [04/Oct/2025 03:21:47] "GET / HTTP/1.1" 200 -
+2025-10-04 03:21:47,659 INFO 127.0.0.1 - - [04/Oct/2025 03:21:47] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:21:47,660 INFO 127.0.0.1 - - [04/Oct/2025 03:21:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:22:05,440 INFO 127.0.0.1 - - [04/Oct/2025 03:22:05] "GET /login HTTP/1.1" 200 -
+2025-10-04 03:22:05,474 INFO 127.0.0.1 - - [04/Oct/2025 03:22:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:22:05,484 INFO 127.0.0.1 - - [04/Oct/2025 03:22:05] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:22:34,348 INFO 127.0.0.1 - - [04/Oct/2025 03:22:34] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:22:34,375 INFO 127.0.0.1 - - [04/Oct/2025 03:22:34] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:22:34,396 INFO 127.0.0.1 - - [04/Oct/2025 03:22:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:22:52,925 INFO 127.0.0.1 - - [04/Oct/2025 03:22:52] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:22:53,165 INFO 127.0.0.1 - - [04/Oct/2025 03:22:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:22:53,173 INFO 127.0.0.1 - - [04/Oct/2025 03:22:53] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:24:40,815 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.156:5000
+2025-10-04 03:24:40,815 INFO [33mPress CTRL+C to quit[0m
+2025-10-04 03:24:55,300 INFO 127.0.0.1 - - [04/Oct/2025 03:24:55] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:24:55,373 INFO 127.0.0.1 - - [04/Oct/2025 03:24:55] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:24:55,451 INFO 127.0.0.1 - - [04/Oct/2025 03:24:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:25:32,159 INFO 127.0.0.1 - - [04/Oct/2025 03:25:32] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:25:32,184 INFO 127.0.0.1 - - [04/Oct/2025 03:25:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:25:32,190 INFO 127.0.0.1 - - [04/Oct/2025 03:25:32] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:27:32,143 INFO 127.0.0.1 - - [04/Oct/2025 03:27:32] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:27:32,168 INFO 127.0.0.1 - - [04/Oct/2025 03:27:32] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:27:32,169 INFO 127.0.0.1 - - [04/Oct/2025 03:27:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:27:39,337 INFO 127.0.0.1 - - [04/Oct/2025 03:27:39] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:27:39,365 INFO 127.0.0.1 - - [04/Oct/2025 03:27:39] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:27:39,373 INFO 127.0.0.1 - - [04/Oct/2025 03:27:39] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:28:00,977 INFO 127.0.0.1 - - [04/Oct/2025 03:28:00] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:28:01,003 INFO 127.0.0.1 - - [04/Oct/2025 03:28:01] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:28:01,008 INFO 127.0.0.1 - - [04/Oct/2025 03:28:01] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:29:47,679 INFO 127.0.0.1 - - [04/Oct/2025 03:29:47] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:29:47,709 INFO 127.0.0.1 - - [04/Oct/2025 03:29:47] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:29:47,710 INFO 127.0.0.1 - - [04/Oct/2025 03:29:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:31:42,762 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.156:5000
+2025-10-04 03:31:42,763 INFO [33mPress CTRL+C to quit[0m
+2025-10-04 03:32:10,391 INFO 127.0.0.1 - - [04/Oct/2025 03:32:10] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-10-04 03:32:11,189 INFO 127.0.0.1 - - [04/Oct/2025 03:32:11] "GET /admin HTTP/1.1" 200 -
+2025-10-04 03:32:11,563 INFO 127.0.0.1 - - [04/Oct/2025 03:32:11] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:32:11,690 INFO 127.0.0.1 - - [04/Oct/2025 03:32:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:32:18,852 INFO 127.0.0.1 - - [04/Oct/2025 03:32:18] "[32mPOST /admin/confirm HTTP/1.1[0m" 302 -
+2025-10-04 03:32:18,882 INFO 127.0.0.1 - - [04/Oct/2025 03:32:18] "GET /admin HTTP/1.1" 200 -
+2025-10-04 03:32:19,226 INFO 127.0.0.1 - - [04/Oct/2025 03:32:19] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:32:19,230 INFO 127.0.0.1 - - [04/Oct/2025 03:32:19] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:32:28,303 INFO 127.0.0.1 - - [04/Oct/2025 03:32:28] "[32mPOST /admin/clear_tickets HTTP/1.1[0m" 302 -
+2025-10-04 03:32:28,341 INFO 127.0.0.1 - - [04/Oct/2025 03:32:28] "GET /admin HTTP/1.1" 200 -
+2025-10-04 03:32:28,415 INFO 127.0.0.1 - - [04/Oct/2025 03:32:28] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:32:28,416 INFO 127.0.0.1 - - [04/Oct/2025 03:32:28] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:32:39,906 INFO 127.0.0.1 - - [04/Oct/2025 03:32:39] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-10-04 03:32:39,976 INFO 127.0.0.1 - - [04/Oct/2025 03:32:39] "GET / HTTP/1.1" 200 -
+2025-10-04 03:32:40,165 INFO 127.0.0.1 - - [04/Oct/2025 03:32:40] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:32:40,166 INFO 127.0.0.1 - - [04/Oct/2025 03:32:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:32:45,178 INFO 127.0.0.1 - - [04/Oct/2025 03:32:45] "GET /login HTTP/1.1" 200 -
+2025-10-04 03:32:45,245 INFO 127.0.0.1 - - [04/Oct/2025 03:32:45] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:32:45,246 INFO 127.0.0.1 - - [04/Oct/2025 03:32:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:33:14,740 ERROR Exception on /login [POST]
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\user\Desktop\New folder (2)\app.py", line 328, in login
+    app.logger.info("Found user id=%s stored_password_present=%s", user.get('id', 'unknown'), bool(stored))
+                                                                   ^^^^^^^^
+AttributeError: 'sqlite3.Row' object has no attribute 'get'
+2025-10-04 03:33:14,876 INFO 127.0.0.1 - - [04/Oct/2025 03:33:14] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2025-10-04 03:33:46,740 INFO 127.0.0.1 - - [04/Oct/2025 03:33:46] "POST /login HTTP/1.1" 200 -
+2025-10-04 03:33:46,786 INFO 127.0.0.1 - - [04/Oct/2025 03:33:46] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:33:46,787 INFO 127.0.0.1 - - [04/Oct/2025 03:33:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:34:05,555 ERROR Exception on /login [POST]
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\New folder (2)\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\user\Desktop\New folder (2)\app.py", line 328, in login
+    app.logger.info("Found user id=%s stored_password_present=%s", user.get('id', 'unknown'), bool(stored))
+                                                                   ^^^^^^^^
+AttributeError: 'sqlite3.Row' object has no attribute 'get'
+2025-10-04 03:34:05,559 INFO 127.0.0.1 - - [04/Oct/2025 03:34:05] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2025-10-04 03:36:06,585 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.156:5000
+2025-10-04 03:36:06,586 INFO [33mPress CTRL+C to quit[0m
+2025-10-04 03:36:13,990 INFO 127.0.0.1 - - [04/Oct/2025 03:36:13] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-10-04 03:36:14,061 INFO 127.0.0.1 - - [04/Oct/2025 03:36:14] "GET / HTTP/1.1" 200 -
+2025-10-04 03:36:14,108 INFO 127.0.0.1 - - [04/Oct/2025 03:36:14] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:36:14,241 INFO 127.0.0.1 - - [04/Oct/2025 03:36:14] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:36:18,638 INFO 127.0.0.1 - - [04/Oct/2025 03:36:18] "GET /buy HTTP/1.1" 200 -
+2025-10-04 03:36:18,713 INFO 127.0.0.1 - - [04/Oct/2025 03:36:18] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:36:18,722 INFO 127.0.0.1 - - [04/Oct/2025 03:36:18] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:36:29,857 INFO 127.0.0.1 - - [04/Oct/2025 03:36:29] "POST /buy HTTP/1.1" 200 -
+2025-10-04 03:36:29,898 INFO 127.0.0.1 - - [04/Oct/2025 03:36:29] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:36:29,899 INFO 127.0.0.1 - - [04/Oct/2025 03:36:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:36:43,326 INFO 127.0.0.1 - - [04/Oct/2025 03:36:43] "[32mPOST /payment/confirm HTTP/1.1[0m" 302 -
+2025-10-04 03:36:43,353 INFO 127.0.0.1 - - [04/Oct/2025 03:36:43] "GET / HTTP/1.1" 200 -
+2025-10-04 03:36:43,406 INFO 127.0.0.1 - - [04/Oct/2025 03:36:43] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:36:43,408 INFO 127.0.0.1 - - [04/Oct/2025 03:36:43] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:36:49,429 INFO 127.0.0.1 - - [04/Oct/2025 03:36:49] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-10-04 03:36:49,452 INFO 127.0.0.1 - - [04/Oct/2025 03:36:49] "GET / HTTP/1.1" 200 -
+2025-10-04 03:36:49,488 INFO 127.0.0.1 - - [04/Oct/2025 03:36:49] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:36:49,490 INFO 127.0.0.1 - - [04/Oct/2025 03:36:49] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:36:52,057 INFO 127.0.0.1 - - [04/Oct/2025 03:36:52] "GET /login HTTP/1.1" 200 -
+2025-10-04 03:36:52,098 INFO 127.0.0.1 - - [04/Oct/2025 03:36:52] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:36:52,101 INFO 127.0.0.1 - - [04/Oct/2025 03:36:52] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:37:24,594 INFO 127.0.0.1 - - [04/Oct/2025 03:37:24] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-10-04 03:37:24,720 INFO 127.0.0.1 - - [04/Oct/2025 03:37:24] "GET /admin HTTP/1.1" 200 -
+2025-10-04 03:37:24,781 INFO 127.0.0.1 - - [04/Oct/2025 03:37:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:37:24,789 INFO 127.0.0.1 - - [04/Oct/2025 03:37:24] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:37:29,205 INFO 127.0.0.1 - - [04/Oct/2025 03:37:29] "[32mPOST /admin/confirm HTTP/1.1[0m" 302 -
+2025-10-04 03:37:29,216 INFO 127.0.0.1 - - [04/Oct/2025 03:37:29] "GET /admin HTTP/1.1" 200 -
+2025-10-04 03:37:29,277 INFO 127.0.0.1 - - [04/Oct/2025 03:37:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-04 03:37:29,289 INFO 127.0.0.1 - - [04/Oct/2025 03:37:29] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:37:45,096 INFO 127.0.0.1 - - [04/Oct/2025 03:37:45] "GET /ticket/8 HTTP/1.1" 200 -
+2025-10-04 03:37:45,209 INFO 127.0.0.1 - - [04/Oct/2025 03:37:45] "[33mGET /logo.svg HTTP/1.1[0m" 404 -
+2025-10-04 03:37:45,210 INFO 127.0.0.1 - - [04/Oct/2025 03:37:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -

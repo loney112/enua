@@ -17,6 +17,11 @@ from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from functools import wraps
 from flask import session, redirect, url_for, flash
+import logging
+import traceback
+
+# configure simple error log
+logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s %(levelname)s %(message)s')
 
 def admin_required(f):
     @wraps(f)
@@ -248,30 +253,93 @@ def login_required(fn):
 	return wrapper
 
 
+def get_user_by_email(email):
+    """Return user as a plain dict (or None). Uses get_db_connection()."""
+    if not email:
+        return None
+    email = email.strip().lower()
+    conn = None
+    try:
+        conn = get_db_connection()
+        row = conn.execute("SELECT * FROM users WHERE lower(email)=?", (email,)).fetchone()
+        if not row:
+            return None
+        # convert sqlite3.Row to plain dict so .get(...) works and no AttributeError occurs
+        return dict(row)
+    except Exception:
+        return None
+    finally:
+        try:
+            if conn:
+                conn.close()
+        except Exception:
+            pass
+
 @app.route('/login', methods=('GET','POST'))
 def login():
-	if request.method == 'POST':
-		email = (request.form.get('email') or '').strip()
-		password = (request.form.get('password') or '').strip()
-		if not email or not password:
-			flash('Email and password required', 'error')
-			return redirect(url_for('login'))
-		conn = get_db_connection()
-		u = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
-		conn.close()
-		if u and check_password_hash(u['password_hash'], password):
-			session['user_id'] = u['id']
-			session['user_name'] = u['name']
-			flash('Logged in', 'success')
-			nxt = request.args.get('next') or url_for('index')
-			return redirect(nxt)
-		# admin quick-login: exact email+plain password (override via env)
-		if email.lower() == ADMIN_EMAIL.lower() and password == ADMIN_PLAIN:
-			session['is_admin'] = True
-			flash('Logged in as admin', 'success')
-			return redirect(url_for('admin_dashboard'))
-		flash('Invalid credentials', 'error')
-	return render_template('user_login.html')
+    if request.method == 'POST':
+        email = (request.form.get('email') or '').strip().lower()
+        password = (request.form.get('password') or '')
+        # debug: log what arrived (mask password)
+        app.logger.info("Login POST received. form_keys=%s email=%s password_len=%d",
+                        list(request.form.keys()), email, len(password))
+
+        # admin quick-login (env override allowed)
+        admin_email = (os.environ.get('ADMIN_EMAIL') or 'enuamaka@gmail.com').strip().lower()
+        admin_plain = (os.environ.get('ADMIN_PW_PLAIN') or 'enuguamaka12').strip()
+        if email and password and email == admin_email and password == admin_plain:
+            session.clear()
+            session['user_id'] = 'admin'
+            session['user_name'] = 'Administrator'
+            session['is_admin'] = True
+            app.logger.info("Admin login success for %s", email)
+            return redirect(url_for('admin_dashboard'))
+
+        # normal user flow
+        try:
+            user = get_user_by_email(email)
+        except Exception as e:
+            app.logger.exception("get_user_by_email failed")
+            user = None
+
+        if not user:
+            app.logger.info("Login failed: user not found for %s", email)
+            flash('Invalid credentials', 'danger')
+            return render_template('user_login.html')
+
+        # read stored password safely
+        stored = None
+        try:
+            stored = user['password_hash']
+        except Exception:
+            try:
+                stored = user['password']
+            except Exception:
+                stored = None
+
+        app.logger.info("Found user id=%s stored_password_present=%s", user.get('id', 'unknown'), bool(stored))
+
+        ok = False
+        if stored:
+            try:
+                ok = check_password_hash(stored, password)
+            except Exception:
+                ok = (stored == password)
+
+        if not ok:
+            app.logger.info("Login failed: wrong password for %s", email)
+            flash('Invalid credentials', 'danger')
+            return render_template('user_login.html')
+
+        # success
+        session.clear()
+        session['user_id'] = user['id']
+        session['user_name'] = user.get('name') or email
+        session['is_admin'] = bool(user.get('is_admin'))
+        app.logger.info("Login success user_id=%s email=%s", session['user_id'], email)
+        return redirect(url_for('index'))
+
+    return render_template('user_login.html')
 
 
 @app.route('/register_user', methods=('GET','POST'))
@@ -309,25 +377,27 @@ def logout():
 @app.route("/buy", methods=("GET", "POST"))
 @login_required
 def buy():
-	if request.method == "POST":
-		name = (request.form.get("name") or "").strip()
-		email = (request.form.get("email") or "").strip()
-		phone = (request.form.get("phone") or "").strip()
-		if not name:
-			flash("Name is required", "error")
-			return redirect(url_for("buy"))
-		conn = get_db_connection()
-		now_iso = datetime.datetime.now(timezone.utc).isoformat()
-		cur = conn.execute(
-			"INSERT INTO tickets (name, email, phone, registered_at, created_at, paid) VALUES (?, ?, ?, ?, ?, 1)",
-			(name, email, phone, now_iso, now_iso),
-		)
-		conn.commit()
-		ticket_id = cur.lastrowid
-		conn.close()
-		flash(f"Ticket purchased! Your ticket number is {ticket_id}", "success")
-		return redirect(url_for("ticket", id=ticket_id))
-	return render_template("buy.html")
+    TICKET_PRICE = 200000.0
+    if request.method == "POST":
+        name = (request.form.get("name") or "").strip()
+        email = (request.form.get("email") or "").strip()
+        phone = (request.form.get("phone") or "").strip()
+        if not name:
+            flash("Name is required", "error")
+            return redirect(url_for("buy"))
+        conn = get_db_connection()
+        now_iso = datetime.datetime.now(timezone.utc).isoformat()
+        cur = conn.execute(
+            "INSERT INTO tickets (name, email, phone, registered_at, created_at, paid) VALUES (?, ?, ?, ?, ?, 0)",
+            (name, email, phone, now_iso, now_iso),
+        )
+        conn.commit()
+        ticket_id = cur.lastrowid
+        conn.close()
+        # Render payment page immediately so account/bank details are visible to the user
+        flash(f"Registration submitted (ID: {ticket_id}). Please complete the payment instructions below.", "info")
+        return render_template("payment.html", reg_id=ticket_id, amount=TICKET_PRICE, bank_name=BANK_NAME, bank_account=BANK_ACCOUNT, bank_account_name=BANK_ACCOUNT_NAME)
+    return render_template("buy.html", price=200000)
 
 
 @app.route('/register', methods=('GET', 'POST'))
@@ -395,33 +465,50 @@ def payment_confirm():
 
 @app.route('/admin/login', methods=('GET', 'POST'))
 def admin_login():
-	if request.method == 'POST':
-		# admin signs in with email and password now
-		email = (request.form.get('email') or '').strip()
-		password = request.form.get('password')
-		# check exact match against configured quick admin creds
-		if email.lower() == ADMIN_EMAIL.lower() and password == ADMIN_PLAIN:
-			session['is_admin'] = True
-			flash('Logged in as admin', 'success')
-			return redirect(url_for('admin_dashboard'))
-		flash('Invalid admin credentials', 'error')
-	return render_template('admin_login.html')
+    if request.method == 'POST':
+        # normalize inputs
+        email = (request.form.get('email') or '').strip().lower()
+        password = (request.form.get('password') or '').strip()
+        app.logger.info("Admin login attempt for email=%s", email)
+
+        # configured admin creds (env overrides allowed)
+        admin_email = (os.environ.get('ADMIN_EMAIL') or ADMIN_EMAIL or '').strip().lower()
+        admin_plain = (os.environ.get('ADMIN_PW_PLAIN') or ADMIN_PLAIN or '').strip()
+
+        if email == admin_email and password == admin_plain:
+            # set full admin session
+            session.clear()
+            session['user_id'] = 'admin'
+            session['user_name'] = 'Administrator'
+            session['is_admin'] = True
+            app.logger.info("Admin login success for %s", email)
+            flash('Logged in as admin', 'success')
+            return redirect(url_for('admin_dashboard'))
+
+        app.logger.info("Admin login failed for %s", email)
+        flash('Invalid admin credentials', 'error')
+    return render_template('admin_login.html')
 
 
 @app.route('/admin')
 @admin_required
 def admin_dashboard():
-	conn = get_db_connection()
-	total = conn.execute('SELECT COUNT(*) as c FROM tickets WHERE paid = 1').fetchone()['c']
-	unpaid = conn.execute('SELECT COUNT(*) as c FROM tickets WHERE paid = 0').fetchone()['c']
-	tickets = conn.execute('SELECT * FROM tickets ORDER BY id DESC LIMIT 20').fetchall()
-	conn.close()
-	return render_template('admin_dashboard.html', total=total, unpaid=unpaid, tickets=tickets)
+    conn = get_db_connection()
+    # totals
+    total = conn.execute("SELECT COUNT(*) as c FROM tickets").fetchone()["c"]
+    unpaid = conn.execute("SELECT COUNT(*) as c FROM tickets WHERE paid = 0").fetchone()["c"]
+    # list tickets with pending/unpaid first, then newest registrations
+    tickets = conn.execute(
+        "SELECT * FROM tickets ORDER BY paid ASC, registered_at DESC"
+    ).fetchall()
+    conn.close()
+    return render_template('admin_dashboard.html', total=total, unpaid=unpaid, tickets=tickets)
 
 
 @app.route('/admin/logout')
 def admin_logout():
-    session.pop('is_admin', None)
+    # clear full session to avoid stale is_admin values
+    session.clear()
     flash('Logged out', 'info')
     return redirect(url_for('index'))
 
@@ -533,4 +620,15 @@ if __name__ == "__main__":
     host = os.environ.get("HOST", "0.0.0.0")
     debug = os.environ.get("FLASK_DEBUG", "0") == "1"
     app.run(host=host, port=port, debug=debug)
+
+# Create a test user account (for development convenience)
+try:
+	conn = sqlite3.connect('raffle.db')
+	pw = generate_password_hash("testpass123")
+	conn.execute("INSERT INTO users (name,email,password_hash) VALUES (?,?,?)", ("Test User","test@example.com",pw))
+	conn.commit()
+	conn.close()
+	print("created test@example.com / testpass123")
+except Exception as e:
+	print("Error creating test user:", e)
 

@@ -1,0 +1,3 @@
+﻿ADMIN quick-login -> email: enuamaka@gmail.com password: enuguamaka12
+ * Serving Flask app 'app'
+ * Debug mode: on
