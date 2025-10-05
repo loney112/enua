@@ -1,15 +1,14 @@
 from flask import (
-	Flask,
-	render_template,
-	request,
-	redirect,
-	url_for,
-	flash,
-	session,
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    flash,
+    session,
+    jsonify,   # added
 )
 import sqlite3
-import os
-import random
 import datetime
 from datetime import timezone
 from PIL import Image, ImageDraw, ImageFont
@@ -17,8 +16,10 @@ from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from functools import wraps
 from flask import session, redirect, url_for, flash
+import os
 import logging
 import traceback
+import sys
 
 # configure simple error log
 logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s %(levelname)s %(message)s')
@@ -34,7 +35,7 @@ def admin_required(f):
 
 
 # If your templates folder is named 'templates' rename the folder or set template_folder accordingly.
-app = Flask(__name__, template_folder="template")
+app = Flask(__name__, static_folder='static', template_folder='template')
 app.secret_key = os.environ.get("RAFFLE_SECRET", "dev-secret-change-me")
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "raffle.db")
@@ -149,8 +150,13 @@ def startup():
 # Provide helpers to templates
 @app.context_processor
 def inject_now():
-	"""Make a now() helper available inside templates: {{ now().year }}"""
-	return {"now": lambda: datetime.datetime.now()}
+	"""Make helpers available inside templates."""
+	return {
+		"now": lambda: datetime.datetime.now(),
+		"current_user": lambda: session.get("user_name"),
+		"is_admin": lambda: bool(session.get("is_admin")),
+		"enugu_description": "Enugu Amaka Building Materials Nig. Ltd. — trusted supplier of tiles, doors, cement and construction materials. Running a company raffle draw for staff and customers; buy tickets to participate.",
+	}
 
 
 def generate_ticket_image(ticket_id: int) -> bool:
@@ -226,18 +232,29 @@ startup()
 
 @app.route("/")
 def index():
-	# Pop the show_clock flag if set during registration so clock shows once
-	show_clock = bool(session.pop("show_clock", False))
-	conn = get_db_connection()
-	# only count paid tickets as sold
-	total = conn.execute("SELECT COUNT(*) as c FROM tickets WHERE paid = 1").fetchone()["c"]
-	winner = conn.execute(
-		"SELECT t.id, t.name, t.email, w.drawn_at FROM winners w JOIN tickets t ON w.ticket_id = t.id ORDER BY w.drawn_at DESC LIMIT 1"
-	).fetchone()
-	conn.close()
-	# include server time (UTC) so clients can sync their clocks to server
-	server_time = datetime.datetime.now(timezone.utc).isoformat()
-	return render_template("index.html", total=total, winner=winner, show_clock=show_clock, server_time=server_time)
+    # Pop the show_clock flag if set during registration so clock shows once
+    show_clock = bool(session.pop("show_clock", False))
+    conn = get_db_connection()
+    # only count paid tickets as sold
+    total = conn.execute("SELECT COUNT(*) as c FROM tickets WHERE paid = 1").fetchone()["c"]
+    winner = conn.execute(
+        "SELECT t.id, t.name, t.email, w.drawn_at FROM winners w JOIN tickets t ON w.ticket_id = t.id ORDER BY w.drawn_at DESC LIMIT 1"
+    ).fetchone()
+    conn.close()
+    # include server time (UTC) so clients can sync their clocks to server
+    server_time = datetime.datetime.now(timezone.utc).isoformat()
+
+    # pass description to template as well (templates may use it directly)
+    enugu_description = "Enugu Amaka Building Materials Nig. Ltd. — trusted supplier of tiles, doors, cement and construction materials. Running a company raffle draw for staff and customers; buy tickets to participate."
+
+    return render_template(
+        "index.html",
+        total=total,
+        winner=winner,
+        show_clock=show_clock,
+        server_time=server_time,
+        enugu_description=enugu_description
+    )
 
 
 def login_required(fn):
@@ -344,27 +361,56 @@ def login():
 
 @app.route('/register_user', methods=('GET','POST'))
 def register_user():
-	if request.method == 'POST':
-		name = (request.form.get('name') or '').strip()
-		email = (request.form.get('email') or '').strip()
-		phone = (request.form.get('phone') or '').strip()
-		password = (request.form.get('password') or '').strip()
-		if not name or not email or not password:
-			flash('Name, email and password required', 'error')
-			return redirect(url_for('register_user'))
-		pw_hash = generate_password_hash(password)
-		conn = get_db_connection()
-		try:
-			conn.execute('INSERT INTO users (name,email,password_hash,phone,created_at) VALUES (?,?,?,?,?)', (name,email,pw_hash,phone,datetime.datetime.now(timezone.utc).isoformat()))
-			conn.commit()
-		except Exception as e:
-			flash('Registration failed (email may already exist)', 'error')
-			conn.close()
-			return redirect(url_for('register_user'))
-		conn.close()
-		flash('Account created, please login', 'success')
-		return redirect(url_for('login'))
-	return render_template('user_register.html')
+    if request.method == 'POST':
+        name = (request.form.get('name') or '').strip()
+        email = (request.form.get('email') or '').strip().lower()
+        password = request.form.get('password', '')
+        password2 = request.form.get('password2', '')
+
+        if not email or not password:
+            flash('Email and password are required', 'error')
+            return redirect(url_for('register_user'))
+        if password != password2:
+            flash('Passwords do not match', 'error')
+            return redirect(url_for('register_user'))
+
+        conn = get_db_connection()
+        try:
+            cur = conn.cursor()
+            # check for existing email first to avoid UNIQUE error
+            cur.execute("SELECT id FROM users WHERE email = ?", (email,))
+            if cur.fetchone():
+                flash('Email already registered — please login', 'error')
+                return redirect(url_for('login'))
+
+            hashed = generate_password_hash(password)
+            now_iso = datetime.datetime.utcnow().isoformat()
+
+            cur.execute(
+                "INSERT INTO users (name, email, password_hash, created_at) VALUES (?, ?, ?, ?)",
+                (name, email, hashed, now_iso)
+            )
+            conn.commit()
+            user_id = cur.lastrowid
+
+        except sqlite3.IntegrityError:
+            conn.rollback()
+            flash('Email already registered — please login', 'error')
+            return redirect(url_for('login'))
+        except Exception:
+            conn.rollback()
+            app.logger.exception("Error creating user")
+            flash('Unexpected error creating account', 'error')
+            return redirect(url_for('register_user'))
+        finally:
+            conn.close()
+
+        session['user_id'] = user_id
+        session['user_name'] = name or email
+        flash('Registration successful', 'success')
+        return redirect(request.form.get('return') or url_for('index'))
+
+    return render_template('user_register.html')
 
 
 @app.route('/logout')
@@ -434,10 +480,12 @@ def register():
 
 @app.route('/payment')
 def payment():
-	# Mock payment page - in production you'd integrate a gateway
-	reg_id = request.args.get('reg_id')
-	amount = request.args.get('amount')
-	return render_template('payment.html', reg_id=reg_id, amount=amount, bank_name=BANK_NAME, bank_account=BANK_ACCOUNT, bank_account_name=BANK_ACCOUNT_NAME)
+    # if user is logged in, take them to the buy flow
+    if session.get('user_id'):
+        return redirect(url_for('buy'))
+    # not logged in: ask them to sign in or register, preserve return target
+    flash('Please sign in or register to proceed to payment', 'warning')
+    return redirect(url_for('login', **{'return': url_for('buy')}))
 
 
 @app.route('/payment/confirm', methods=('POST',))
@@ -614,6 +662,89 @@ def admin_clear_tickets():
 # debug endpoint removed
 
 
+# small JSON endpoint used by injected navbar script to get server-side auth state
+@app.route("/_session.json")
+def session_json():
+    return jsonify(
+        logged_in=bool(session.get("user_id")),
+        user_name=session.get("user_name"),
+        is_admin=bool(session.get("is_admin"))
+    )
+
+
+# Inject a small client-side script into HTML responses that have the SITE NAVBAR marker.
+# The script will:
+# - update the #auth-area to show Login/Register OR Hi <name> + Logout (Logout links to /logout)
+# - hide any draw links for non-admin users (elements with hrefs containing "draw")
+# - update an element with id="site-description" if present to the official description
+@app.after_request
+def inject_nav_script(response):
+    try:
+        content_type = response.headers.get("Content-Type", "")
+        if "text/html" in content_type.lower():
+            marker = b"<!-- SITE NAVBAR START -->"
+            data = response.get_data()
+            if marker in data:
+                # decode once
+                text = data.decode("utf-8", errors="ignore")
+                # fix common static .html links inserted into templates -> map to Flask routes
+                replacements = {
+                    'href="index.html"': 'href="/"',
+                    "href='index.html'": "href='/'",
+                    'href="tickets.html"': 'href="/tickets"',
+                    "href='tickets.html'": "href='/tickets'",
+                    'href="buy.html"': 'href="/buy"',
+                    "href='buy.html'": "href='/buy'",
+                    'href="payment.html"': 'href="/payment"',
+                    "href='payment.html'": "href='/payment'",
+                    'href="draw.html"': 'href="/draw"',
+                    "href='draw.html'": "href='/draw'",
+                    'href="base.html"': 'href="/"',
+                    "href='base.html'": "href='/'",
+                    'href="user_login.html"': 'href="/login"',
+                    "href='user_login.html'": "href='/login'",
+                    'href="user_register.html"': 'href="/register_user"',
+                    "href='user_register.html'": "href='/register_user'",
+                    # replace any "Get started" button text/link to Register
+                    'Get started': 'Register',
+                    # If there was a button linking to a static page, ensure it goes to register
+                    'href="/get_started"': 'href="/register_user"',
+                    "href='/get_started'": "href='/register_user'",
+                }
+                for a, b in replacements.items():
+                    text = text.replace(a, b)
+
+                # small client-side script (unchanged) appended before </body>
+                script = (
+                    "<script>(async function(){"
+                    "try{"
+                    "  const r = await fetch('/_session.json'); if(!r.ok) return;"
+                    "  const s = await r.json();"
+                    "  const auth = document.getElementById('auth-area');"
+                    "  if(auth){"
+                    "    if(s.logged_in){"
+                    "      auth.innerHTML = '<span style=\"margin-right:12px;color:#2f2a57;font-weight:600\">Hi, '+(s.user_name||'')+'</span>'"
+                    "        +'<a id=\"logout-link\" href=\"/logout\" style=\"background:transparent;border:2px solid #d32b2b;color:#d32b2b;padding:8px 14px;border-radius:24px;text-decoration:none;font-weight:700\">Logout</a>';"
+                    "    } else {"
+                    "      auth.innerHTML = '<a id=\"login-link\" class=\"btn-outline\" href=\"/login\" style=\"background:transparent;border:2px solid #2f2a57;color:#2f2a57;padding:8px 14px;border-radius:24px;text-decoration:none;font-weight:700\">Login</a>'"
+                    "        +'<a id=\"register-link\" class=\"btn\" href=\"/register_user\" style=\"background:#bfc6ff;border:2px solid rgba(47,42,87,0.15);padding:8px 14px;border-radius:24px;text-decoration:none;font-weight:700;color:#2f2a57\">Register</a>';"
+                    "    }"
+                    "  }"
+                    "  if(!s.is_admin){ document.querySelectorAll('a[href*=\"draw\"]').forEach(a=>a.style.display='none'); }"
+                    "  const desc = document.getElementById('site-description');"
+                    "  if(desc) desc.textContent = 'Enugu Amaka Building Materials Nig. Ltd. — company raffle draw. Buy tickets to participate.';"
+                    "}catch(e){console.error(e)}"
+                    "})();</script>"
+                )
+                if "</body>" in text:
+                    text = text.replace("</body>", script + "</body>")
+                else:
+                    text = text + script
+                response.set_data(text.encode("utf-8"))
+    except Exception as e:
+        app.logger.exception("inject_nav_script failed")
+    return response
+
 if __name__ == "__main__":
     # Use PORT/HOST from environment (Render sets $PORT). Allow toggling debug via FLASK_DEBUG.
     port = int(os.environ.get("PORT", 5000))
@@ -631,4 +762,54 @@ try:
 	print("created test@example.com / testpass123")
 except Exception as e:
 	print("Error creating test user:", e)
+
+import sqlite3, sys, os
+
+DB = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('--') else os.path.join(os.path.dirname(__file__), 'database.db')
+delete_email = None
+if '--delete' in sys.argv:
+    try:
+        delete_email = sys.argv[sys.argv.index('--delete') + 1]
+    except IndexError:
+        print("Usage: inspect_db.py [path/to/db] [--delete email]")
+        sys.exit(1)
+
+if not os.path.exists(DB):
+    print("Database not found:", DB)
+    sys.exit(1)
+
+conn = sqlite3.connect(DB)
+cur = conn.cursor()
+
+print("== users table info (PRAGMA table_info(users)) ==")
+for row in cur.execute("PRAGMA table_info(users);"):
+    print(row)
+
+print("\n== users table schema ==")
+row = cur.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name='users';").fetchone()
+print(row[0] if row else "users table not found")
+
+print("\n== duplicate emails (email, count) ==")
+for r in cur.execute("SELECT email, COUNT(*) AS c FROM users GROUP BY email HAVING c>1 ORDER BY c DESC;"):
+    print(r)
+
+print("\n== latest 50 users (id, name, email) ==")
+for r in cur.execute("SELECT id, name, email FROM users ORDER BY id DESC LIMIT 50;"):
+    print(r)
+
+if delete_email:
+    print("\nDeleting duplicate rows for:", delete_email)
+    # keep the smallest id, delete the rest
+    ids = [r[0] for r in cur.execute("SELECT id FROM users WHERE email=? ORDER BY id ASC;", (delete_email,)).fetchall()]
+    if len(ids) <= 1:
+        print("No duplicates to delete for", delete_email)
+    else:
+        keep = ids[0]
+        to_delete = ids[1:]
+        print("Keeping id:", keep, "Deleting ids:", to_delete)
+        cur.execute("DELETE FROM users WHERE id IN ({})".format(",".join("?"*len(to_delete))), to_delete)
+        conn.commit()
+        print("Deleted", cur.rowcount, "rows")
+conn.close()
+print("\nDone.")
 

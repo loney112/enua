@@ -1,44 +1,164 @@
-{% extends 'base.html' %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Enugu Amaka Building Materials</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root{--container:1100px;--accent:#3b2d6b;--brand:#d32b2b}
+    *{box-sizing:border-box} body{margin:0;font-family:Nunito,system-ui,Arial,color:#222}
+    .wrap{max-width:var(--container);margin:0 auto;padding:0 20px}
+    header{height:72px;display:flex;align-items:center;border-bottom:1px solid rgba(0,0,0,0.04);background:#fff}
+    .brand{font-family:Merriweather,serif;font-weight:700;color:var(--brand);font-size:26px}
+    .hero{background:linear-gradient(180deg,#eae7ff,#fff);padding:56px 0 40px}
+    .hero-grid{display:flex;gap:40px;align-items:center;max-width:var(--container);margin:0 auto;padding:0 20px}
+    .hero-left{flex:1}
+    .hero h1{font-family:Merriweather,serif;font-size:44px;margin:0;color:var(--accent)}
+    .hero p{margin-top:14px;color:#444;font-size:18px}
+    .cta{display:flex;gap:12px;margin-top:18px}
+    .btn{background:#bfc6ff;border:0;padding:10px 16px;border-radius:24px;color:#2f2a57;font-weight:700;text-decoration:none;cursor:pointer}
+    footer{background:var(--accent);color:#fff;padding:36px 0;margin-top:40px}
+    .footer-inner{max-width:var(--container);margin:0 auto;padding:0 20px;display:flex;gap:20px;align-items:flex-start}
+    .company-info{flex:1}
+    .company-info h3{margin:0 0 8px 0;font-family:Merriweather,serif}
+    .signup-inline{display:flex;gap:12px;align-items:center}
+    @media(max-width:900px){.hero-grid{flex-direction:column}}
+  </style>
+</head>
+<body>
 
-{% block content %}
-<div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-    <div>
-      <p class="muted">Total tickets sold</p>
-      <h2>{{ total }}</h2>
-    </div>
-    {% if show_clock %}
-      <div style="text-align:right">
-        <p class="muted">Server-synced clock (UTC)</p>
-        <div id="clock" class="clock">--:--:--</div>
+  <!-- SITE NAVBAR START -->
+  <header class="site-header wrap" role="banner">
+    <div style="display:flex;align-items:center;width:100%;gap:18px">
+      <a href="/" aria-label="Home" style="text-decoration:none;color:inherit;display:flex;align-items:center">
+        <div class="brand" style="line-height:1">
+          <div style="font-size:28px;letter-spacing:1px">ENUGU AMAKA</div>
+          <div style="font-size:11px;color:#666;font-weight:600">Building Materials Nig Ltd.</div>
+        </div>
+      </a>
+
+      <nav aria-label="Primary navigation" style="margin-left:20px">
+        <ul style="display:flex;gap:18px;list-style:none;margin:0;padding:0;align-items:center">
+          <li><a href="/" style="text-decoration:none;color:#333;font-weight:600">Home</a></li>
+          <li><a href="/tickets" style="text-decoration:none;color:#333;font-weight:600">Tickets</a></li>
+          <li><a id="nav-buy" href="/buy" style="text-decoration:none;color:#333;font-weight:600">Buy</a></li>
+          <li><a href="/payment" style="text-decoration:none;color:#333;font-weight:600">Payment</a></li>
+          <li><a href="#base" style="text-decoration:none;color:#333;font-weight:600">Base</a></li>
+          <li><a href="#contact" style="text-decoration:none;color:#333;font-weight:600">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-cta" style="margin-left:auto;display:flex;gap:10px;align-items:center">
+        <div id="auth-area">
+          <a class="btn-outline" href="/login" style="background:transparent;border:2px solid #2f2a57;color:#2f2a57;padding:8px 14px;border-radius:24px;text-decoration:none;font-weight:700">Login</a>
+          <a class="btn" href="/register_user" style="background:#bfc6ff;padding:8px 14px;border-radius:24px;text-decoration:none;font-weight:700;color:#2f2a57">Register</a>
+        </div>
       </div>
-      <script>
-        const serverIso = '{{ server_time }}';
-        let serverDate = new Date(serverIso);
-        let clientDate = new Date();
-        let offsetMs = serverDate.getTime() - clientDate.getTime();
-        function updateClock(){
-          let now = new Date(Date.now() + offsetMs);
-          let h = String(now.getUTCHours()).padStart(2,'0');
-          let m = String(now.getUTCMinutes()).padStart(2,'0');
-          let s = String(now.getUTCSeconds()).padStart(2,'0');
-          document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    </div>
+  </header>
+  <!-- SITE NAVBAR END -->
+
+  <!-- Pre-header signup (kept) -
+  <section style="background:linear-gradient(180deg,#f3eefe,#fff);padding:18px 0;border-bottom:1px solid rgba(0,0,0,0.03)">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center">
+      <div style="max-width:640px">
+        <strong id="site-description">Enugu Amaka Building Materials Nig. Ltd. — trusted supplier of tiles, doors, cement and construction materials. Company raffle draw is running — buy tickets to participate.</strong>
+        <div style="color:#666;margin-top:6px">Subscribe for stock & raffle updates.</div>
+      </div>
+      <form class="signup-inline" onsubmit="event.preventDefault();alert('Subscribed (demo)');">
+        <input type="email" placeholder="Email Address*" required style="padding:10px;border-radius:8px;border:1px solid #ddd">
+        <button class="btn" type="submit">Sign up</button>
+      </form>
+    </div>
+  </section>-->
+
+  <!-- Hero -->
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <h1>Quality building materials — plus a company raffle draw</h1>
+          <p>Enugu Amaka supplies trusted construction materials across Enugu. We're also running a raffle draw for staff and customers — purchase tickets below.</p>
+          <div class="cta">
+            <button class="btn" id="btn-buy">Buy Tickets</button>
+            <button class="btn" id="btn-view-ticket">View Your Ticket</button>
+          </div>
+        </div>
+
+        <!-- Right panel removed entirely as requested -->
+
+      </div>
+    </section>
+
+    <!-- Feature cards SECTION REMOVED per request -->
+
+  </main>
+
+  <!-- footer simplified, company info restored -->
+  <footer>
+    <div class="footer-inner">
+      <div class="company-info">
+        <div class="logo-large" style="font-family:Merriweather,serif;font-size:30px;color:#fff">Enugu Amaka</div>
+        <h3 style="margin-top:8px">Building Materials Nig Ltd.</h3>
+        <p style="max-width:600px;color:rgba(255,255,255,0.9);margin-top:6px">
+          Enugu Amaka Building Materials Nig. Ltd. — General distributor of Italian tiles, South African bricks, Spanish tiles, Nigerian tiles, Chinese tiles, crack tiles, Chinese doors, Turkish doors, PVC ceiling, Italian granite and marble, WC, stainless hand rail, Spanish bricks, luxury doors, rods, cement, white cement, and more. Address: No. 1 Enugu Amaka close Nike Lake Road Trans Ekulu, Enugu.
+        </p>
+        <div style="margin-top:12px">Email: info@enuguamaka.com • Phone: 08037741538 / 08074548241</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <div style="color:rgba(255,255,255,0.85)">© 2025 Enugu Amaka Building Materials</div>
+        <div style="margin-top:8px"><a href="/privacy" style="color:#fff;text-decoration:none;margin-right:12px">Privacy</a><a href="/terms" style="color:#fff;text-decoration:none">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // When user clicks Buy or View ticket, check session and redirect accordingly.
+    async function sessionStatus(){
+      try{
+        const r = await fetch('/_session.json',{cache:'no-store'});
+        if(!r.ok) return {logged_in:false};
+        return await r.json();
+      }catch(e){ return {logged_in:false}; }
+    }
+
+    document.getElementById('btn-buy').addEventListener('click', async function(){
+      const s = await sessionStatus();
+      if(s.logged_in){
+        location.href = '/buy';
+      } else {
+        location.href = '/login?return=/buy';
+      }
+    });
+
+    document.getElementById('btn-view-ticket').addEventListener('click', async function(){
+      const s = await sessionStatus();
+      if(s.logged_in){
+        // show last purchased ticket
+        location.href = '/ticket';
+      } else {
+        location.href = '/login?return=/ticket';
+      }
+    });
+
+    // Also update auth-area via session endpoint (keeps navbar working)
+    (async function(){
+      try{
+        const s = await sessionStatus();
+        const auth = document.getElementById('auth-area');
+        if(!auth) return;
+        if(s.logged_in){
+          auth.innerHTML = '<span style="margin-right:12px;color:#2f2a57;font-weight:600">Hi, '+(s.user_name||'')+'</span>'
+            +'<a id="logout-link" href="/logout" style="background:transparent;border:2px solid #d32b2b;color:#d32b2b;padding:8px 14px;border-radius:24px;text-decoration:none;font-weight:700">Logout</a>';
+          document.getElementById('logout-link').addEventListener('click', function(e){});
+        } else {
+          auth.innerHTML = '<a href="/login" style="background:transparent;border:2px solid #2f2a57;padding:8px 14px;border-radius:24px;text-decoration:none;font-weight:700;color:#2f2a57">Login</a>'
+            +'<a href="/register_user" style="background:#bfc6ff;padding:8px 14px;border-radius:24px;margin-left:8px;text-decoration:none;font-weight:700;color:#2f2a57">Register</a>';
         }
-        updateClock();
-        setInterval(updateClock, 1000);
-      </script>
-    {% endif %}
-  </div>
-
-  <hr>
-
-  {% if winner %}
-    <h3>Latest Winner</h3>
-    <p>Ticket #{{ winner['id'] }} — {{ winner['name'] }} ({{ winner['email'] or 'no email' }})</p>
-    <p>Drawn at: {{ winner['drawn_at'] }}</p>
-  {% else %}
-    <p>No winner drawn yet.</p>
-  {% endif %}
-</div>
-
-{% endblock %}
+      }catch(e){}
+    })();
+  </script>
+</body>
+</html>

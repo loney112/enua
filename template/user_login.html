@@ -1,21 +1,58 @@
-{% extends 'base.html' %}
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Login</title>
+<style>body{font-family:Arial;margin:0} .wrap{max-width:900px;margin:40px auto;padding:0 20px} header{height:72px;display:flex;align-items:center;border-bottom:1px solid #eee;padding:0 20px}.brand{font-weight:700;color:#d32b2b}</style>
+</head>
+<body>
+  <header class="wrap"><a class="brand" href="/">ENUGU AMAKA</a></header>
+  <main class="wrap">
+    <section style="background:#fff;padding:22px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06)">
+      <h2>Login</h2>
+      <form id="login-form" method="post" action="/login">
+        <label>Email<input name="email" type="email" required style="width:100%;padding:10px;margin-top:6px"></label>
+        <label style="display:block;margin-top:10px">Password<input name="password" type="password" required style="width:100%;padding:10px;margin-top:6px"></label>
+        <input type="hidden" name="return" id="return-field" value="">
+        <div style="margin-top:12px"><button style="padding:10px 16px;background:#2f2a57;color:#fff;border:0;border-radius:6px">Login</button></div>
+      </form>
+      <p style="margin-top:12px">No account? <a href="/register_user">Register</a></p>
+    </section>
+  </main>
 
-{% block content %}
-<div class="form-center">
-  <div class="form-card card">
-    <h2>Account Login</h2>
-    <form method="post" action="{{ url_for('login') }}">
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required autofocus>
-
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" required>
-
-      <div class="actions" style="margin-top:12px;">
-        <button type="submit" class="btn">Login</button>
-      </div>
-    </form>
-    <p class="muted">No account yet? <a href="{{ url_for('register_user') }}">Create one</a></p>
-  </div>
-</div>
-{% endblock %}
+  <script>
+    // preserve return param so user comes back to buy/payment when redirected
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const r = params.get('return') || '';
+      if(r) document.getElementById('return-field').value = r;
+      // fallback: if POST to /login not available, perform client-side localStorage auth (demo)
+      document.getElementById('login-form').addEventListener('submit', async function(e){
+        // attempt server submit first
+        try{
+          const form = e.target;
+          const data = new FormData(form);
+          const res = await fetch(form.action, {method:'POST', body: data, credentials:'same-origin'});
+          if(res.ok){
+            // assume server redirected; follow location if provided
+            const text = await res.text();
+            // if server returned HTML redirect, allow normal navigation
+            if(res.redirected){ return; }
+            // if response JSON indicates success, redirect
+            try{ const json = JSON.parse(text); if(json && json.ok) { location.href = json.redirect || '/'; return; } }catch(_){}
+            // otherwise, fallthrough to client fallback if server not implemented
+          }
+        }catch(_){}
+        // client-side fallback (demo)
+        e.preventDefault();
+        const email = form.email.value.trim().toLowerCase();
+        const pw = form.password.value;
+        const users = JSON.parse(localStorage.getItem('enugu_users')||'[]');
+        const u = users.find(x=>x.email===email && x.password===pw);
+        if(!u){ alert('Invalid credentials (demo).'); return; }
+        localStorage.setItem('enugu_current_user', email);
+        const ret = document.getElementById('return-field').value || '/';
+        location.href = ret;
+      });
+    })();
+  </script>
+</body>
+</html>

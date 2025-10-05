@@ -9,13 +9,27 @@
   --white: #fff;
   --charcoal: #222;
   --accent: #d4af37;
+  --bg1:#071124;
+  --bg2:#0b3758;
+}
+html,body{
+  height:100%;
 }
 body {
   font-family: 'Segoe UI', 'Arial', sans-serif;
-  background: #0b1220; /* subtle dark page background */
+  background: linear-gradient(120deg,var(--bg1),var(--bg2));
   color: #e6eef9;
   margin: 0;
   padding: 0;
+  position:relative;
+  overflow-x:hidden;
+  background-size: 400% 400%;
+  animation: bgshift 12s ease infinite;
+}
+@keyframes bgshift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 header {
   display: flex;

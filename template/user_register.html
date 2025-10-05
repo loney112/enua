@@ -1,17 +1,55 @@
-{% extends 'base.html' %}
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Register</title>
+<style>body{font-family:Arial;margin:0} .wrap{max-width:900px;margin:40px auto;padding:0 20px} header{height:72px;display:flex;align-items:center;border-bottom:1px solid #eee;padding:0 20px}.brand{font-weight:700;color:#d32b2b}</style>
+</head>
+<body>
+  <header class="wrap"><a class="brand" href="/">ENUGU AMAKA</a></header>
+  <main class="wrap">
+    <section style="background:#fff;padding:22px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06)">
+      <h2>Create an account</h2>
+      <form id="register-form" method="post" action="/register_user">
+        <label>Email<input name="email" type="email" required style="width:100%;padding:10px;margin-top:6px"></label>
+        <label style="display:block;margin-top:10px">Password<input name="password" type="password" required minlength="6" style="width:100%;padding:10px;margin-top:6px"></label>
+        <label style="display:block;margin-top:10px">Confirm Password<input name="password2" type="password" required style="width:100%;padding:10px;margin-top:6px"></label>
+        <input type="hidden" name="return" id="return-field" value="">
+        <div style="margin-top:12px"><button style="padding:10px 16px;background:#2f2a57;color:#fff;border:0;border-radius:6px">Register</button></div>
+      </form>
+      <p style="margin-top:12px">Already have an account? <a href="/login">Login</a></p>
+    </section>
+  </main>
 
-{% block content %}
-<div class="form-center">
-  <div class="form-card card">
-    <h2>Create an account</h2>
-    <form method="post" action="{{ url_for('register_user') }}">
-      <label class="field">Name<input name="name" required></label>
-      <label class="field">Email<input name="email" type="email" required></label>
-      <label class="field">Phone<input name="phone" type="tel"></label>
-      <label class="field">Password<input name="password" type="password" required></label>
-      <div class="actions"><button class="btn" type="submit">Register</button></div>
-    </form>
-    <p class="muted">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
-  </div>
-</div>
-{% endblock %}
+  <script>
+    // preserve return param
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const r = params.get('return') || '';
+      if(r) document.getElementById('return-field').value = r;
+      // form submit tries server first; fallback to client-side demo storage if server endpoint not present
+      document.getElementById('register-form').addEventListener('submit', async function(e){
+        const form = e.target;
+        try{
+          const data = new FormData(form);
+          const res = await fetch(form.action, {method:'POST', body: data, credentials:'same-origin'});
+          if(res.ok){
+            // allow server to handle redirect
+            return;
+          }
+        }catch(_){}
+        e.preventDefault();
+        const email = form.email.value.trim().toLowerCase();
+        const pw = form.password.value;
+        const pw2 = form.password2.value;
+        if(pw !== pw2){ alert('Passwords do not match'); return; }
+        const users = JSON.parse(localStorage.getItem('enugu_users')||'[]');
+        if(users.find(u=>u.email===email)){ alert('Email already registered. Please login.'); location.href='/login'; return; }
+        users.push({email,password:pw});
+        localStorage.setItem('enugu_users', JSON.stringify(users));
+        localStorage.setItem('enugu_current_user', email);
+        const ret = document.getElementById('return-field').value || '/';
+        location.href = ret;
+      });
+    })();
+  </script>
+</body>
+</html>

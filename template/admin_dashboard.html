@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="card">
-  <h2>Admin Dashboard</h2>
+<main class="form-card card" style="padding:12px;">
+  <h1 style="font-size:1.25rem; margin-bottom:6px;">Admin Dashboard</h1>
   <p>Total tickets: <strong>{{ total }}</strong> • Pending: <strong>{{ unpaid }}</strong></p>
 
-  <div class="admin-controls" style="margin:12px 0;">
+  <div class="admin-controls" style="margin:12px 0; display:flex; gap:8px; flex-wrap:wrap;">
     <button class="btn filter-btn" data-filter="all">All</button>
     <button class="btn filter-btn" data-filter="pending">Pending</button>
     <button class="btn filter-btn" data-filter="paid">Paid</button>
 
-    <form method="post" action="{{ url_for('admin_clear_tickets') }}" style="display:inline-block; float:right;" onsubmit="return confirm('This will permanently delete all tickets. Are you sure?');">
+    <form method="post" action="{{ url_for('admin_clear_tickets') }}" style="margin-left:auto;" onsubmit="return confirm('This will permanently delete selected tickets. Proceed?');">
       <button type="submit" class="btn alt">Clear All Tickets</button>
     </form>
   </div>
 
   <div class="table-wrap">
-    <table class="table">
+    <table class="table admin-table" role="table" aria-label="Tickets">
       <thead>
         <tr>
           <th>ID</th>
@@ -24,26 +24,20 @@
           <th>Email</th>
           <th>Phone</th>
           <th>Registered</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th class="status">Status</th>
+          <th class="actions">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for t in tickets %}
         <tr data-paid="{{ 1 if t.paid else 0 }}">
-          <td>{{ t.id }}</td>
-          <td>{{ t.name }}</td>
-          <td>{{ t.email }}</td>
-          <td>{{ t.phone }}</td>
-          <td>{{ t.registered_at or t.created_at }}</td>
-          <td>
-            {% if t.paid %}
-              <span class="label success">Paid</span>
-            {% else %}
-              <span class="label warning">Pending</span>
-            {% endif %}
-          </td>
-          <td>
+          <td data-label="ID">{{ t.id }}</td>
+          <td data-label="Name">{{ t.name }}</td>
+          <td data-label="Email">{{ t.email }}</td>
+          <td data-label="Phone">{{ t.phone }}</td>
+          <td data-label="Registered">{{ t.registered_at or t.created_at }}</td>
+          <td data-label="Status">{% if t.paid %}<span class="label success">Paid</span>{% else %}<span class="label warning">Pending</span>{% endif %}</td>
+          <td data-label="Actions" class="actions">
             <a class="btn small" href="{{ url_for('ticket', id=t.id) }}">View</a>
             {% if not t.paid %}
               <form method="post" action="{{ url_for('admin_confirm') }}" style="display:inline;">
@@ -57,7 +51,92 @@
       </tbody>
     </table>
   </div>
-</div>
+</main>
+
+<style>
+/* Fix: ensure table header cells are separate and actions don't overlap */
+.admin-table, .admin-table thead, .admin-table tbody { width:100%; border-collapse:collapse; }
+
+/* Make all header cells behave like table cells and have padding */
+.admin-table th,
+.admin-table td {
+  position: relative;           /* avoid absolute overlap */
+  white-space: normal;          /* allow wrapping if needed */
+  padding: 10px 14px;           /* consistent spacing */
+  vertical-align: middle;
+}
+
+/* Reserve compact, non-wrapping space for the actions column */
+.admin-table th.actions,
+.admin-table td.actions {
+  white-space: nowrap;          /* keep buttons together */
+  width: 1%;                    /* let content size itself */
+  padding-left: 18px;
+}
+
+/* Ensure action buttons aren't positioned absolutely or clipped */
+.admin-table td.actions .btn,
+.admin-table td.actions .action-btn {
+  position: relative !important;
+  display: inline-block !important;
+  margin-left: 8px !important;
+  z-index: 2 !important;
+}
+
+/* Allow parent container to show overflow so buttons are not clipped */
+.table-wrap, .admin-panel, .card {
+  overflow: visible !important;
+}
+
+/* table basics */
+.admin-table { width:100%; border-collapse: collapse; table-layout: auto; }
+.admin-table thead th,
+.admin-table tbody td {
+  padding: 10px 14px;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+}
+
+/* ensure header cells render as normal table cells (prevent overlap) */
+.admin-table thead th {
+  display: table-cell;
+  background: transparent;
+  z-index: 2;
+}
+
+/* reserve clear space for status and actions so they can't glue together */
+.admin-table th.status {
+  min-width: 110px;
+  width: 110px;
+  text-align: left;
+}
+
+.admin-table th.actions {
+  min-width: 140px;
+  width: 140px;
+  text-align: right;
+}
+
+/* action buttons */
+.admin-table td.actions .btn,
+.admin-table td.actions form {
+  display: inline-block;
+  margin-left: 8px;
+  position: relative;
+  z-index: 3;
+}
+
+/* ensure parent container allows horizontal scroll instead of clipping */
+.table-wrap { overflow-x: auto; overflow-y: visible; }
+
+/* Small-screen tweaks */
+@media (max-width: 800px) {
+  .admin-table th.status,
+  .admin-table th.actions { width: auto; min-width: 80px; }
+  .admin-table th, .admin-table td { white-space: normal; }
+}
+</style>
 
 <script>
   document.querySelectorAll('.filter-btn').forEach(btn=>{
